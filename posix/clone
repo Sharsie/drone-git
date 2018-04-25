@@ -42,6 +42,8 @@ export GIT_COMMITTER_EMAIL=${GIT_AUTHOR_EMAIL}
 # TODO we should ultimately look at the ref, since
 # we need something compatible with deployment events.
 
+[[ -d /tmp/git/.git ]] && cp -r /tmp/git/.git .
+
 case $DRONE_BUILD_EVENT in
 pull_request)
 	clone-pull-request
@@ -53,3 +55,5 @@ tag)
 	clone-commit
 	;;
 esac
+
+[[ -d /tmp/git/.git ]] && rsync -az --delete .git/ /tmp/git/.git

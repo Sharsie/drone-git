@@ -42,7 +42,7 @@ export GIT_COMMITTER_EMAIL=${GIT_AUTHOR_EMAIL}
 # TODO we should ultimately look at the ref, since
 # we need something compatible with deployment events.
 
-[ -d /tmp/git/${DRONE_REPO}/.git ] && echo "Restoring git cache" && cp -r /tmp/git/${DRONE_REPO}/.git .
+[ -d /tmp/git/${DRONE_REPO} ] && echo "Restoring git cache" && cp -r /tmp/git/${DRONE_REPO} ../ && git fetch origin > /dev/null
 
 case $DRONE_BUILD_EVENT in
 pull_request)
@@ -56,4 +56,4 @@ tag)
 	;;
 esac
 
-[ -d .git ] && echo "Rebuilding git cache" && mkdir -p /tmp/git/${DRONE_REPO} && rm -rf /tmp/git/${DRONE_REPO}/.git && cp -r .git /tmp/git/${DRONE_REPO}/ || echo "No git repository to cache"
+[ -d .git ] && echo "Rebuilding git cache" && rm -rf /tmp/git/${DRONE_REPO} && mkdir -p /tmp/git/${DRONE_REPO} && cp -r . /tmp/git/${DRONE_REPO} || echo "No git repository to cache"

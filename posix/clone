@@ -43,6 +43,13 @@ export GIT_COMMITTER_EMAIL=${GIT_AUTHOR_EMAIL}
 # we need something compatible with deployment events.
 
 [ -d /tmp/git/${DRONE_REPO} ] && echo "Restoring git cache" && cp -r /tmp/git/${DRONE_REPO} ../ && echo "Updating git repo" &&  git fetch origin > /dev/null
+
+if [ ! -d .git ]; then
+	git init
+	git remote add origin ${DRONE_REMOTE_URL}
+	git fetch origin
+fi
+
 [ -d .git ] && echo "Rebuilding git cache" && rm -rf /tmp/git/${DRONE_REPO} && mkdir -p /tmp/git/${DRONE_REPO} && cp -r . /tmp/git/${DRONE_REPO} || echo "No git repository to cache"
 
 case $DRONE_BUILD_EVENT in
